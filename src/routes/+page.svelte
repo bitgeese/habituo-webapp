@@ -1,26 +1,32 @@
 <script>
-    import { page } from '$app/stores';
-  
+    import HabitList from '$lib/components/HabitList.svelte';
+
     /** @type {import('./$types').PageData} */
     export let data;
   
-    let habits = data.habits ?? [{name: "Drink glass of water"}];
-  </script>
-  
-    Hello, {data.user ? data.user.username : 'Guest'}
+    let habits = data.habits ?? [];
 
-    <ul>
-        {#each habits as habit}
-          <li class="mb-2">
-            <div class="flex justify-between items-center">
-              <span>{habit.name}</span>
-            </div>
-          </li>
-        {:else}
-          <li>No habits found.</li>
-        {/each}
-      </ul>
+    // Delete Habit
+    async function deleteHabit(habitId) {
+      const response = await fetch(`http://localhost:8000/api/habits/${habitId}/`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Token ${data.token}`,
+        },
+      });
   
-      
+      if (response.ok) {
+        habits = habits.filter(habit => habit.id !== habitId);
+      } else {
+        alert('Failed to delete the habit');
+      }
+    }
+
+</script>
+
+
+Hello, {data.user ? data.user.email : 'Guest'}
+<HabitList {habits} {deleteHabit} />
+    
 
   

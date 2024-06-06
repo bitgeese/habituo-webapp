@@ -10,30 +10,32 @@ export async function load({ cookies }) {
 
 
     // Get User Profile
-    // const profileResponse = await fetch('https://api.example.com/api/profile/', {
-    //   headers: {
-    //     'Authorization': `Token ${token}`,
-    //   },
-    // });
+    const profileResponse = await fetch('http://localhost:8000/api/users/me/', {
+      headers: {
+        'Authorization': `Token ${token}`,
+      },
+    });
 
-    // if (profileResponse.ok) {
-    //   user = await profileResponse.json();
-    // }
+    if (profileResponse.ok) {
+      user = await profileResponse.json();
+    } else {
+      user = profileResponse;
+    }
+    
 
     // Get User Habits
-    // const habitsResponse = await fetch('https://api.example.com/api/habits/', {
-    //   headers: {
-    //     'Authorization': `Token ${token}`,
-    //   },
-    // });
+    const habitsResponse = await fetch('http://localhost:8000/api/habits/', {
+      headers: {
+        'Authorization': `Token ${token}`,
+      },
+    });
 
-    // if (habitsResponse.ok) {
-    //   habits = await habitsResponse.json();
-    // }
-    
+    if (habitsResponse.ok) {
+      habits = await habitsResponse.json();
+    }  
   }
 
-  return { user, habits };
+  return { user, habits, token };
 }
 
 /** @type {import('./$types').Actions} */
