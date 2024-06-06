@@ -22,11 +22,30 @@
       }
     }
 
+    // Delete Habit
+    async function patchHabit(index, payload) {
+      const response = await fetch(`http://localhost:8000/api/habits/${habits[index].id}/`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${data.token}`,
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok) {
+        let data = await response.json();
+        return data;
+      } else {
+        alert('Failed to patch the habit');
+      }
+    }
+
 </script>
 
 
 Hello, {data.user ? data.user.email : 'Guest'}
-<HabitList {habits} {deleteHabit} />
+<HabitList {habits} {deleteHabit} {patchHabit}/>
     
 
   
