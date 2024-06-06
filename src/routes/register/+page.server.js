@@ -1,51 +1,35 @@
 import { fail, redirect } from '@sveltejs/kit';
 
-/** @type {import('./$types').PageServerLoad} */
-export async function load({ cookies }) {
-  const token = cookies.get('token');
-  let user = null;
-
-  if (token) {
-    const response = await fetch('https://api.example.com/api/profile/', {
-      headers: {
-        'Authorization': `Token ${token}`,
-      },
-    });
-
-    if (response.ok) {
-      user = await response.json();
-    }
-  }
-
-  return { user };
-}
-
 /** @type {import('./$types').Actions} */
 export const actions = {
   register: async ({ request }) => {
     const data = await request.formData();
     const email = data.get('email');
-    const username = data.get('username');
     const password = data.get('password');
+    const password2 = data.get('password2');
 
-    if (!email || !username || !password) {
-      return fail(400, { email, username, password, missing: true });
+    if (!email || !password || !password2) {
+      return fail(400, { email, password, password2, missing: true });
     }
 
-    const response = await fetch('https://api.example.com/api/register/', {
+    if (password !== password2) {
+      return fail(400, { password, password2, match: false });
+    }
+
+    const response = await fetch('http://localhost:8000/api/users/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, username, password }),
+      body: JSON.stringify({ email, password }),
     });
 
     if (!response.ok) {
-      return fail(400, { email, username, registrationFailed: true });
+      const result = await response.json();
+      return fail(400, { error: result.message || 'Registration failed' });
     }
 
-    // Redirect to login page after successful registration
-    throw redirect(303, '/login');
+    throw redirect(303, '/login'); // Redirect to login page on success
   },
 };
 

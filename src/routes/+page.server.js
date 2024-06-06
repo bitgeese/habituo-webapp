@@ -7,25 +7,30 @@ export async function load({ cookies }) {
   let habits = [];
 
   if (token) {
-    const profileResponse = await fetch('https://api.example.com/api/profile/', {
-      headers: {
-        'Authorization': `Token ${token}`,
-      },
-    });
 
-    if (profileResponse.ok) {
-      user = await profileResponse.json();
-    }
 
-    const habitsResponse = await fetch('https://api.example.com/api/habits/', {
-      headers: {
-        'Authorization': `Token ${token}`,
-      },
-    });
+    // Get User Profile
+    // const profileResponse = await fetch('https://api.example.com/api/profile/', {
+    //   headers: {
+    //     'Authorization': `Token ${token}`,
+    //   },
+    // });
 
-    if (habitsResponse.ok) {
-      habits = await habitsResponse.json();
-    }
+    // if (profileResponse.ok) {
+    //   user = await profileResponse.json();
+    // }
+
+    // Get User Habits
+    // const habitsResponse = await fetch('https://api.example.com/api/habits/', {
+    //   headers: {
+    //     'Authorization': `Token ${token}`,
+    //   },
+    // });
+
+    // if (habitsResponse.ok) {
+    //   habits = await habitsResponse.json();
+    // }
+    
   }
 
   return { user, habits };

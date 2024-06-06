@@ -26,7 +26,7 @@
         <div class="label">
           <span class="label-text">Password</span>
         </div>
-        <input name="password" type="password" autocomplete="current-password" required class="input input-bordered w-full max-w-lg">
+        <input name="password" type="password" required class="input input-bordered w-full max-w-lg">
       </label>
     </div>
     
@@ -35,7 +35,7 @@
         <div class="label">
           <span class="label-text">Repeat Password</span>
         </div>
-        <input name="password" type="password" autocomplete="current-password" required class="input input-bordered w-full max-w-lg">
+        <input name="password2" type="password" required class="input input-bordered w-full max-w-lg">
       </label>
     </div>
 
