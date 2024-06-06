@@ -7,6 +7,13 @@ module.exports = {
   },
   plugins: [require("@tailwindcss/typography"), require("daisyui")],
   daisyui: {
-    themes: ["cyberpunk"],
+    themes: [
+      {
+        light: {
+          ...require("daisyui/src/theming/themes")["cyberpunk"],
+          // secondary: "teal",
+        },
+      },
+    ],
   },
 }

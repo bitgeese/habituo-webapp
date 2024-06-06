@@ -1,10 +1,11 @@
 <script>
-    import HabitList from '$lib/components/HabitList.svelte';
-
+    import HabitDashboard from '$lib/components/HabitDashboard.svelte'
     /** @type {import('./$types').PageData} */
     export let data;
   
-    let habits = data.habits ?? [];
+    let wishlist = data.wishlist ?? [];
+    let inProgressList = data.inProgressList ?? [];
+    let dailyRoutine = data.dailyRoutine ?? [];
 
     // Delete Habit
     async function deleteHabit(habitId) {
@@ -16,7 +17,7 @@
       });
   
       if (response.ok) {
-        habits = habits.filter(habit => habit.id !== habitId);
+        wishlist = wishlist.filter(habit => habit.id !== habitId);
       } else {
         alert('Failed to delete the habit');
       }
@@ -24,7 +25,7 @@
 
     // Delete Habit
     async function patchHabit(index, payload) {
-      const response = await fetch(`http://localhost:8000/api/habits/${habits[index].id}/`, {
+      const response = await fetch(`http://localhost:8000/api/habits/${wishlist[index].id}/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -45,7 +46,11 @@
 
 
 <!-- Hello, {data.user ? data.user.email : 'Guest'} -->
-<HabitList {habits} {deleteHabit} {patchHabit}/>
-    
 
-  
+<HabitDashboard
+  wishlist={wishlist}
+  inProgressList={inProgressList}
+  dailyRoutine={dailyRoutine}
+  deleteHabit={deleteHabit}
+  patchHabit={patchHabit}
+/>

@@ -4,7 +4,9 @@ import { fail, redirect } from '@sveltejs/kit';
 export async function load({ cookies }) {
   const token = cookies.get('token');
   let user = null;
-  let habits = [];
+  let wishlist = [];
+  let inProgressList = [];
+  let dailyRoutine = [];
 
   if (token) {
 
@@ -23,19 +25,39 @@ export async function load({ cookies }) {
     }
     
 
-    // Get User Habits
-    const habitsResponse = await fetch('http://localhost:8000/api/habits/', {
+    // Get User Wishlist
+    const wishlistResponse = await fetch('http://localhost:8000/api/habits/wishlist/', {
       headers: {
         'Authorization': `Token ${token}`,
       },
     });
 
-    if (habitsResponse.ok) {
-      habits = await habitsResponse.json();
+    if (wishlistResponse.ok) {
+      wishlist = await wishlistResponse.json();
+    }  
+    // Get in progress habits
+    const habitWipResponse = await fetch('http://localhost:8000/api/habits/in_progress/', {
+      headers: {
+        'Authorization': `Token ${token}`,
+      },
+    });
+
+    if (habitWipResponse.ok) {
+      inProgressList = await habitWipResponse.json();
+    }
+    // Get in progress habits
+    const routineResponse = await fetch('http://localhost:8000/api/habits/daily_routine/', {
+      headers: {
+        'Authorization': `Token ${token}`,
+      },
+    });
+
+    if (routineResponse.ok) {
+      dailyRoutine = await routineResponse.json();
     }  
   }
 
-  return { user, habits, token };
+  return { user, wishlist, inProgressList,dailyRoutine, token };
 }
 
 /** @type {import('./$types').Actions} */
@@ -47,9 +69,10 @@ export const actions = {
   createHabit: async ({ cookies, request, url }) => {
     const data = await request.formData();
     const name = data.get('name');
+    const status = data.get('status');
 
-    if (!name) {
-      return fail(400, { name, missing: true });
+    if (!name || !status) {
+      return fail(400, { name, status, missing: true });
     }
 
     const response = await fetch(`http://localhost:8000/api/habits/`, {
@@ -58,11 +81,11 @@ export const actions = {
         'Content-Type': 'application/json',
         'Authorization': `Token ${cookies.get('token', { path: '/' })}`,
       },
-      body: JSON.stringify({name})
+      body: JSON.stringify({name, status})
     });
 
     if (!response.ok) {
-      return fail(400, { name, incorrect: true });
+      return fail(400, { name, status, incorrect: true });
     }
 
     // const result = await response.json();

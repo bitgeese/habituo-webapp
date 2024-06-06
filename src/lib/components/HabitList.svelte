@@ -1,5 +1,7 @@
 <script>
-    export let habits = [];
+    export let wishlist = [];
+    export let inProgressList = [];
+    export let dailyRoutine = [];
     export let deleteHabit;
     export let patchHabit;
 
@@ -12,6 +14,18 @@
     
     // Create Habit
     let createModal;
+    let statusAdd;
+
+    function addDailyRoutine() {
+        statusAdd.value = "core";
+        createModal.showModal();
+
+    }
+
+    function addWishlist() {
+        statusAdd.value = "wishlist";
+        createModal.showModal();
+    }
 
     // Delete Habit
     let deleteModal;
@@ -36,62 +50,78 @@
     }
 
     function updateHabit(index, event) {
-        habits[index].name = event.target.value;
-        console.log(event.target.value);
+        wishlist[index].name = event.target.value;
         patchHabit(index, {name: event.target.value});
         editingIndex = null;
     }
+
+    // Select Habit
+    function selectHabit(index) {
+        patchHabit(index, {status: "wip"})
+        inProgressList = [...inProgressList, wishlist[index]];
+        dailyRoutine = [...dailyRoutine, wishlist[index]];
+        wishlist = wishlist.filter(habit => habit.id !== wishlist[index].id);
+        
+    }
+
+
+    // Drag and Drop
+    // https://svelte.dev/repl/b225504c9fea44b189ed5bfb566df6e6?version=4.2.18
 
 </script>
 
 
 <div class="mt-12 grid grid-cols-2 gap-6">
     <div class="col-span-2">
-        <h2 class="text-lg font-semibold text-primary uppercase">Daily Routine</h2>
+        <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-primary uppercase">Daily Routine</h2>
+            <button on:click={() => addDailyRoutine()} class="btn btn-primary w-24">Add Habit+</button>
+        </div>
         <ul class="mt-4 space-y-2">
-            <li class="card p-4 bg-neutral text-neutral-content shadow-xl">
-                Wake up
-            </li>
-            <li class="card p-4 bg-success text-success-content shadow-xl">
-                Turn off Sleep Tracking
-            </li>
-            <li class="card p-4 bg-base-100 text-base-content shadow-xl">
-                Make your bed 
-            </li>
-            <li class="card p-4 bg-error text-error-content shadow-xl">
-                Smoke a cigarette
-            </li>
+            {#each dailyRoutine as habit, index (habit.id)}
+                <li class="card p-4 bg-base-100 shadow-xl">
+                    {habit.name}
+                </li>
+            {:else}
+            <li>No Habits in Daily Routine</li>
+            {/each}
+            
         </ul>
         
     </div>
     
 
-    <div class="card p-4 bg-base-100 shadow-xl">
+    <div class="col-span-2 sm:col-span-1 card p-4 bg-base-100 shadow-xl">
         <h2 class="text-lg font-semibold text-primary uppercase">Habits in Progress</h2>
         <ul class="mt-4 space-y-2">
-            <li>
-                Make your bed
-            </li>
+            {#each inProgressList as habit, index (habit.id)}
+                <li>{habit.name}</li>
+            {:else}
+            <li>Not working on any habits.</li>
+            {/each}
+
+            
         </ul>
     </div>
-    <div class="card p-4 bg-base-100 shadow-xl">
+    <div class="col-span-2 sm:col-span-1 card p-4 bg-base-100 shadow-xl">
         <div class="flex justify-between">
             <h2 class="text-lg font-semibold text-primary uppercase">Wishlist</h2>
-            <button on:click={() => createModal.showModal()} class="btn btn-primary px-9">Add Habit+</button>
+            <button on:click={() => addWishlist()} class="btn btn-primary w-24">Add Habit+</button>
         </div>
         <ul class="mt-2 space-y-2">
-            {#each habits as habit, index (habit.id)}
+            {#each wishlist as habit, index (habit.id)}
             <li class="flex items-center justify-between">
                 {#if editingIndex !== index}
-                    <button type="button" on:click={() => editHabit(index)} >{habit.name}</button>
+                    <span>{habit.name}</span>
                 {:else}
                     <input class="input w-full max-w-xs input-primary" type="text" value={habit.name} on:blur={(event) => updateHabit(index, event)} />
                 {/if}
                 
                 
                 <div class="flex justify-end items-center">
-                    <button on:click={() => editHabit(index)} class="mr-1.5 btn btn-secondary">Edit</button>
-                    <button on:click={() => openDeleteModal(habit)} class="btn btn-warning">Delete</button>
+                    <!-- <button on:click={() => editHabit(index)} class="mr-1.5 btn btn-secondary">Edit</button> -->
+                    <button on:click={() => selectHabit(index)} class="mr-1.5 btn btn-secondary w-24">Select</button>
+                    <button on:click={() => openDeleteModal(habit)} class="btn btn-warning w-24">Delete</button>
                 </div>
                 
             </li>
@@ -119,12 +149,14 @@
 </div>
 </dialog>
 
+
 <dialog bind:this={createModal} id="habit-delete-modal" class="modal modal-bottom sm:modal-middle">
     <div class="modal-box">
         <h3 class="font-bold text-lg">Create a Habit</h3>
         <!-- <p class="py-4">
         </p> -->
         <form method="POST" action="?/createHabit">
+            <input bind:this={statusAdd} type="hidden" name="status">
             <div>
                 <label class="w-full max-w-xs">
                     <div class="label">
