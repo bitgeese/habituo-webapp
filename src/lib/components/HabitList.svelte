@@ -1,7 +1,4 @@
 <script>
-    /** @type {import('./$types').ActionData} */
-    export let form;
-    //import Modal from '$lib/components/ConfirmDeleteModal.svelte';
     export let habits = [];
     export let deleteHabit;
     export let patchHabit;
@@ -46,32 +43,66 @@
     }
 
 </script>
-<div class="max-w-xl">
-    <div class="flex items-center justify-between">
-        <h1 class="text-lg font-semibold text-primary uppercase">Wishlist</h1>
-        <button on:click={() => createModal.showModal()} class="btn btn-primary px-9">Add Habit+</button>
+
+
+<div class="mt-12 grid grid-cols-2 gap-6">
+    <div class="col-span-2">
+        <h2 class="text-lg font-semibold text-primary uppercase">Daily Routine</h2>
+        <ul class="mt-4 space-y-2">
+            <li class="card p-4 bg-neutral text-neutral-content shadow-xl">
+                Wake up
+            </li>
+            <li class="card p-4 bg-success text-success-content shadow-xl">
+                Turn off Sleep Tracking
+            </li>
+            <li class="card p-4 bg-base-100 text-base-content shadow-xl">
+                Make your bed 
+            </li>
+            <li class="card p-4 bg-error text-error-content shadow-xl">
+                Smoke a cigarette
+            </li>
+        </ul>
+        
     </div>
-    <ul class="mt-2 space-y-2">
-        {#each habits as habit, index (habit.id)}
-        <li class="flex items-center justify-between">
-            {#if editingIndex !== index}
-                <button type="button" on:click={() => editHabit(index)} >{habit.name}</button>
+    
+
+    <div class="card p-4 bg-base-100 shadow-xl">
+        <h2 class="text-lg font-semibold text-primary uppercase">Habits in Progress</h2>
+        <ul class="mt-4 space-y-2">
+            <li>
+                Make your bed
+            </li>
+        </ul>
+    </div>
+    <div class="card p-4 bg-base-100 shadow-xl">
+        <div class="flex justify-between">
+            <h2 class="text-lg font-semibold text-primary uppercase">Wishlist</h2>
+            <button on:click={() => createModal.showModal()} class="btn btn-primary px-9">Add Habit+</button>
+        </div>
+        <ul class="mt-2 space-y-2">
+            {#each habits as habit, index (habit.id)}
+            <li class="flex items-center justify-between">
+                {#if editingIndex !== index}
+                    <button type="button" on:click={() => editHabit(index)} >{habit.name}</button>
+                {:else}
+                    <input class="input w-full max-w-xs input-primary" type="text" value={habit.name} on:blur={(event) => updateHabit(index, event)} />
+                {/if}
+                
+                
+                <div class="flex justify-end items-center">
+                    <button on:click={() => editHabit(index)} class="mr-1.5 btn btn-secondary">Edit</button>
+                    <button on:click={() => openDeleteModal(habit)} class="btn btn-warning">Delete</button>
+                </div>
+                
+            </li>
             {:else}
-                <input class="input w-full max-w-xs input-primary" type="text" value={habit.name} on:blur={(event) => updateHabit(index, event)} />
-            {/if}
-            
-            
-            <div class="flex justify-end items-center">
-                <button on:click={() => editHabit(index)} class="mr-1.5 btn btn-secondary">Edit</button>
-                <button on:click={() => openDeleteModal(habit)} class="btn btn-warning">Delete</button>
-            </div>
-            
-        </li>
-        {:else}
-        <li>No habits found.</li>
-        {/each}
-    </ul>
+            <li>No habits found.</li>
+            {/each}
+        </ul>
+    </div>
+    
 </div>
+
 
 
 <dialog bind:this={deleteModal} id="habit-delete-modal" class="modal modal-bottom sm:modal-middle">

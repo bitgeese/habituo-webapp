@@ -44,7 +44,7 @@
 </script>
 
 
-Hello, {data.user ? data.user.email : 'Guest'}
+<!-- Hello, {data.user ? data.user.email : 'Guest'} -->
 <HabitList {habits} {deleteHabit} {patchHabit}/>
     
 
