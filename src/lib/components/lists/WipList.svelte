@@ -4,6 +4,7 @@
     export let wipList = [];
     
     let createModal;
+  
 
 </script>
 

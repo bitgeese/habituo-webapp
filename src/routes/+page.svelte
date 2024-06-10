@@ -1,7 +1,4 @@
 <script>
-  // import HabitDashboard from '$lib/components/HabitDashboard.svelte';
-  // import HabitList from '$lib/components/HabitList.svelte';
-  // import { deleteHabit, patchHabit } from '$lib/utils/habitActions';
   import DailyRoutine from '$lib/components/lists/DailyRoutine.svelte'
   import Wishlist from "$lib/components/lists/Wishlist.svelte"
   import WipList from "$lib/components/lists/WipList.svelte";
@@ -11,8 +8,15 @@
   let wishlist = data.wishlist ?? [];
   let wipList = data.wipList ?? [];
   let dailyRoutine = data.dailyRoutine ?? [];
+  let token = data.token ?? [];
 
   let activeTab = '1';
+
+  async function handleSelect(event) {
+      let currentHabit = event.detail;
+      dailyRoutine.push(currentHabit);
+      wipList.push(currentHabit);
+  }
   
 </script>
 
@@ -36,29 +40,9 @@
   {/if}
   {#if activeTab == '2'}
   <div>
-    <Wishlist {wishlist}/>
+    <Wishlist {wishlist} {token} on:select={handleSelect}/>
   </div>
   {/if}
 
 
 </div>
-
-
-
-
-
-
-
-<!-- Hello, {data.user ? data.user.email : 'Guest'} -->
-<!-- <HabitList {wishlist} {deleteHabit} {patchHabit} {inProgressList} {dailyRoutine}/> -->
-    
-
-
-<!-- <HabitDashboard/> -->
-<!-- <HabitDashboard
-  wishlist={wishlist}
-  inProgressList={inProgressList}
-  dailyRoutine={dailyRoutine}
-  deleteHabit={deleteHabit}
-  patchHabit={patchHabit}
-/> -->

@@ -5,7 +5,7 @@
 
 </script>
 
-<dialog bind:this={createModal} id="habit-delete-modal" class="modal modal-bottom sm:modal-middle">
+<dialog bind:this={createModal} id="habit-create-modal" class="modal modal-bottom sm:modal-middle">
     <div class="modal-box">
         <h3 class="font-bold text-lg">Create a Habit</h3>
         <form method="POST" action="?/createHabit">

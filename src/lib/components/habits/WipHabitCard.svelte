@@ -2,7 +2,7 @@
     import Rating from "$lib/components/details/Rating.svelte"
     export let habit = null;
 </script>
-<li class="bg-base-100 card shadow-xl">
+<li class="bg-base-100 card shadow-lg">
       <div class="card-body">
         
         <div class="flex items-center justify-between">
