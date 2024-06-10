@@ -1,4 +1,5 @@
 <script>
+    import SortableList from './SortableList.svelte';
     import WipHabitCard from "$lib/components/habits/WipHabitCard.svelte"
     import CoreHabitCard from "$lib/components/habits/CoreHabitCard.svelte"
     import CreateHabitModal from "$lib/components/modals/CreateHabitModal.svelte"
@@ -11,6 +12,7 @@
     let options = { weekday: 'long', day: 'numeric', month: 'short' };
     let formattedDate = today.toLocaleDateString('en-US', options);
 
+    const sortList = ev => {dailyRoutine = ev.detail};
 </script>
 
 <div class="mt-6 mx-2 flex items-center justify-between">
@@ -22,16 +24,22 @@
 </div>
 
 
-<ul class="mt-2 space-y-4">
-  {#each dailyRoutine as habit, index (habit.id)}
-    {#if habit.status == "wip"}
-        <WipHabitCard {habit}/>
+
+
+<SortableList 
+    list={dailyRoutine} 
+    key="order" 
+    on:sort={sortList}
+    let:item
+		let:index
+>
+    {#if item.status == "wip"}
+        <WipHabitCard habit={item}/>
     {:else}
-        <CoreHabitCard {habit}/>
+        <CoreHabitCard habit={item}/>
     {/if}
-  {:else}
-  <li>No habits found.</li>
-  {/each}
-</ul>
+</SortableList>
+
+
 
 <CreateHabitModal bind:createModal statusAdd={'core'}/>

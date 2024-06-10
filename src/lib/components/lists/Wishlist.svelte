@@ -1,6 +1,6 @@
 <script>
+    import SortableList from './SortableList.svelte';
     import { createEventDispatcher } from 'svelte';
-
     import {deleteHabit, patchHabit} from "$lib/utils/habitActions.js"
     import CoreHabitCard from "$lib/components/habits/CoreHabitCard.svelte"
     import CreateHabitModal from "$lib/components/modals/CreateHabitModal.svelte"
@@ -32,6 +32,8 @@
       wishlist = wishlist.filter(habit => habit.id !== currentHabit.id);
       currentHabit = null;
     }
+
+    const sortList = ev => {wishlist = ev.detail};
 </script>
 
 <div class="mt-6 mx-2 flex items-center justify-between">
@@ -42,13 +44,18 @@
 </div>
 
 
-<ul class="mt-2 space-y-4">
-  {#each wishlist as habit, index (habit.id)}
-    <CoreHabitCard {habit} on:delete={handleDelete} on:select={handleSelect}/>
-  {:else}
-  <li>No habits found.</li>
-  {/each}
-</ul>
+<SortableList 
+    list={wishlist} 
+    key="order" 
+    on:sort={sortList}
+    let:item
+		let:index
+>
+    <CoreHabitCard habit={item} on:delete={handleDelete} on:select={handleSelect}/>
+</SortableList>
+
 
 <CreateHabitModal bind:createModal statusAdd={'wishlist'} />
 <DeleteHabitModal bind:deleteModal {currentHabit} on:confirm={confirmDelete}/>
+
+

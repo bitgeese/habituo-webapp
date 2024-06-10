@@ -9,7 +9,7 @@
           <div>
             <div class="mt-2 text-xl font-semibold">
             
-            <div>{ habit.name }</div>
+            <div>{ habit.order } - { habit.name }</div>
             
             </div>
               <div class="mt-2 text-xs flex items-center justify-start space-x-2">

@@ -1,10 +1,12 @@
 <script>
+    import SortableList from './SortableList.svelte';
     import WipHabitCard from "$lib/components/habits/WipHabitCard.svelte"
     import CreateHabitModal from "$lib/components/modals/CreateHabitModal.svelte"
     export let wipList = [];
     
     let createModal;
   
+    const sortList = ev => {wipList = ev.detail};
 
 </script>
 
@@ -16,12 +18,15 @@
 </div>
 
 
-<ul class="mt-2 space-y-4">
-  {#each wipList as habit, index (habit.id)}
-    <WipHabitCard {habit}/>
-  {:else}
-  <li>No habits found.</li>
-  {/each}
-</ul>
+
+<SortableList 
+    list={wipList} 
+    key="order" 
+    on:sort={sortList}
+    let:item
+		let:index
+>
+    <WipHabitCard habit={item}/>
+</SortableList>
 
 <CreateHabitModal bind:createModal statusAdd={'wip'}/>
