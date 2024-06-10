@@ -1,3 +1,5 @@
+import { fail, redirect } from '@sveltejs/kit';
+
 export async function deleteHabit(habitId, token) { 
   const response = await fetch(`http://localhost:8000/api/habits/${habitId}/`, {
       method: 'DELETE',
@@ -28,3 +30,27 @@ export async function deleteHabit(habitId, token) {
     return await response.json();
   }
   
+  export async function createHabit({ cookies, request }) {
+    const data = await request.formData();
+    const name = data.get('name');
+    const status = data.get('status');
+  
+    if (!name || !status) {
+      return fail(400, { name, status, missing: true });
+    }
+  
+    const response = await fetch(`http://localhost:8000/api/habits/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${cookies.get('token')}`,
+      },
+      body: JSON.stringify({ name, status })
+    });
+  
+    if (!response.ok) {
+      return fail(400, { name, status, incorrect: true });
+    }
+  
+    throw redirect(303, '/');
+  }

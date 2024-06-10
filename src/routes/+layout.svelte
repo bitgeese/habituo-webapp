@@ -1,7 +1,8 @@
 <script>
   import { page } from '$app/stores';
-
+  
   let user = $page.data.user ?? null;
+  
 </script>
 
 <style>
