@@ -1,6 +1,6 @@
 <script>
     export let wishlist = [];
-    export let editHabit;
+    export let addWishlist;
     export let selectHabit;
     export let openDeleteModal;
     export let updateHabit;

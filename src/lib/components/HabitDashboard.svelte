@@ -65,7 +65,7 @@
   
     <Wishlist
       {wishlist}
-      {editHabit}
+      {addWishlist}
       {selectHabit}
       {openDeleteModal}
       {updateHabit}

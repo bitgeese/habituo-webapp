@@ -1,56 +1,65 @@
 <script>
-    import HabitDashboard from '$lib/components/HabitDashboard.svelte'
-    /** @type {import('./$types').PageData} */
-    export let data;
-  
-    let wishlist = data.wishlist ?? [];
-    let inProgressList = data.inProgressList ?? [];
-    let dailyRoutine = data.dailyRoutine ?? [];
+  // import HabitDashboard from '$lib/components/HabitDashboard.svelte';
+  // import HabitList from '$lib/components/HabitList.svelte';
+  // import { deleteHabit, patchHabit } from '$lib/utils/habitActions';
+  import DailyRoutine from '$lib/components/lists/DailyRoutine.svelte'
 
-    // Delete Habit
-    async function deleteHabit(habitId) {
-      const response = await fetch(`http://localhost:8000/api/habits/${habitId}/`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Token ${data.token}`,
-        },
-      });
-  
-      if (response.ok) {
-        wishlist = wishlist.filter(habit => habit.id !== habitId);
-      } else {
-        alert('Failed to delete the habit');
-      }
-    }
+  /** @type {import('./$types').PageData} */
+  export let data;
 
-    // Delete Habit
-    async function patchHabit(index, payload) {
-      const response = await fetch(`http://localhost:8000/api/habits/${wishlist[index].id}/`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Token ${data.token}`,
-        },
-        body: JSON.stringify(payload)
-      });
+  // let wishlist = data.wishlist ?? [];
+  // let inProgressList = data.inProgressList ?? [];
+  let dailyRoutine = data.dailyRoutine ?? [];
 
-      if (response.ok) {
-        let data = await response.json();
-        return data;
-      } else {
-        alert('Failed to patch the habit');
-      }
-    }
-
+  let currentTab = '1';
 </script>
 
 
-<!-- Hello, {data.user ? data.user.email : 'Guest'} -->
 
-<HabitDashboard
+<div>
+  {#if currentTab == '0'}
+  <div>
+    In progress
+  </div>
+  {/if}
+  {#if currentTab == '1'}
+  <div>
+    <DailyRoutine {dailyRoutine}/>
+  </div>
+  {/if}
+  {#if currentTab == '2'}
+  <div>
+    Wishlist
+  </div>
+  {/if}
+
+  <!-- Tab Control -->
+  <div class="fixed bottom-0 left-0 w-full">
+    <div role="tablist" class="tabs tabs-bordered">
+      <input type="radio" value="0" bind:group={currentTab} checked={currentTab === '0'} name="my_tabs_1" role="tab" class="tab" aria-label="Working" />
+      <input type="radio" value="1" bind:group={currentTab} checked={currentTab === '1'} name="my_tabs_1" role="tab" class="tab" aria-label="Daily Routine" />
+      <input type="radio" value="2" bind:group={currentTab} checked={currentTab === '2'} name="my_tabs_1" role="tab" class="tab" aria-label="Wishlist" />
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+<!-- Hello, {data.user ? data.user.email : 'Guest'} -->
+<!-- <HabitList {wishlist} {deleteHabit} {patchHabit} {inProgressList} {dailyRoutine}/> -->
+    
+
+
+<!-- <HabitDashboard/> -->
+<!-- <HabitDashboard
   wishlist={wishlist}
   inProgressList={inProgressList}
   dailyRoutine={dailyRoutine}
   deleteHabit={deleteHabit}
   patchHabit={patchHabit}
-/>
+/> -->
