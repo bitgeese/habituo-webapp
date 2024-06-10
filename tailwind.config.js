@@ -10,7 +10,7 @@ module.exports = {
     themes: [
       {
         light: {
-          ...require("daisyui/src/theming/themes")["bumblebee"],
+          ...require("daisyui/src/theming/themes")["forest", "bumblebee"],
           // secondary: "teal",
         },
       },

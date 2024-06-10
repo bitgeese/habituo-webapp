@@ -5,17 +5,17 @@ export async function load({ cookies }) {
   const token = cookies.get('token');
   let user = null;
   let wishlist = [];
-  let inProgressList = [];
+  let wipList = [];
   let dailyRoutine = [];
 
   if (token) {
     user = await fetchUserProfile(token);
     wishlist = await fetchWishlist(token);
-    inProgressList = await fetchInProgressHabits(token);
+    wipList = await fetchInProgressHabits(token);
     dailyRoutine = await fetchDailyRoutine(token);
   }
 
-  return { user, wishlist, inProgressList, dailyRoutine, token };
+  return { user, wishlist, wipList, dailyRoutine, token };
 }
 
 export const actions = {
