@@ -1,8 +1,20 @@
 <script>
   import { page } from '$app/stores';
-  
-  let user = $page.data.user ?? null;
-  
+  import { derived } from 'svelte/store';
+  import { onDestroy } from 'svelte';
+
+  let user = null;
+
+  // Update user when the page data changes
+  const unsubscribe = page.subscribe(($page) => {
+    user = $page.data.user ?? null;
+  });
+
+  onDestroy(() => {
+    unsubscribe();
+  });
+
+  const pathname = derived(page, $page => $page.url.pathname);
 </script>
 
 <style>
@@ -26,6 +38,11 @@
 
 <main class="min-h-screen">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div role="tablist" class="mt-2 tabs md:tabs-lg tabs-bordered">
+      <a href="/wip" class="tab {$pathname === '/wip' ? 'tab-active' : ''}"> Working</a>
+      <a href="/" class="tab {$pathname === '/' ? 'tab-active' : ''}"> Daily Routine </a>
+      <a href="/wishlist" class="tab {$pathname === '/wishlist' ? 'tab-active' : ''}">Wishlist</a>
+    </div>
     <slot />
   </div>
 </main>

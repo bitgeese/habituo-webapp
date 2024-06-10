@@ -52,5 +52,5 @@ export async function deleteHabit(habitId, token) {
       return fail(400, { name, status, incorrect: true });
     }
   
-    throw redirect(303, '/');
+    return await response.json();
   }
