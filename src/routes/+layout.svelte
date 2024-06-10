@@ -11,7 +11,7 @@
 {#if user}
   <div class="navbar bg-base-100">
     <div class="flex-1">
-      <a href="/" class="btn btn-ghost text-xl">🌳 Habituo.io</a>
+      <a href="/" class="btn btn-ghost font-black uppercase tracking-wider text-primary text-xl">🌳 Habituo.io</a>
     </div>
     <div class="flex-none">
       <button class="btn btn-square btn-ghost">
@@ -28,3 +28,8 @@
     <slot />
   </div>
 </main>
+<footer class="mt-12 footer footer-center p-4 bg-base-200 text-base-content">
+  <aside>
+    <p>Copyright © 2024 - by <a class="link link-accent" href="https://bitgeese.io">BitGeese.io</a></p>
+  </aside>
+</footer>

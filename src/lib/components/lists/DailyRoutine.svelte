@@ -7,12 +7,14 @@
     // Create Habit Modal
     let createModal;
 
-
+    let today = new Date();
+    let options = { weekday: 'long', day: 'numeric', month: 'short' };
+    let formattedDate = today.toLocaleDateString('en-US', options);
 
 </script>
 
 <div class="mt-6 mx-2 flex items-center justify-between">
-  <h2 class="text-2xl font-bold">🌅 Sunday 9 Jun</h2>
+  <h2 class="text-2xl font-bold">🌅 {formattedDate}</h2>
   <div class="join">
     <button on:click={() => createModal.showModal()} class="btn btn-ghost join-item">Add</button>
     <button class="btn btn-ghost join-item">Edit</button>
