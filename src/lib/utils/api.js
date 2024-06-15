@@ -26,3 +26,18 @@ export async function fetchUserProfile(token) {
     return response.ok ? await response.json() : [];
   }
   
+  export async function reorderHabits(fromId, toId, token) {
+    const response = await fetch('http://localhost:8000/api/habits/reorder/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+      },
+      body: JSON.stringify({ from_id: fromId, to_id: toId })
+    });
+  
+    if (!response.ok) {
+      throw new Error('Failed to reorder habits');
+    }
+  }
+  

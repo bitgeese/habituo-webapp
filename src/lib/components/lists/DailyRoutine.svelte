@@ -3,7 +3,9 @@
     import WipHabitCard from "$lib/components/habits/WipHabitCard.svelte"
     import CoreHabitCard from "$lib/components/habits/CoreHabitCard.svelte"
     import CreateHabitModal from "$lib/components/modals/CreateHabitModal.svelte"
+    
     export let dailyRoutine = [];
+    export let token;
     
     // Create Habit Modal
     let createModal;
@@ -30,6 +32,7 @@
     list={dailyRoutine} 
     key="order" 
     on:sort={sortList}
+    {token}
     let:item
 		let:index
 >

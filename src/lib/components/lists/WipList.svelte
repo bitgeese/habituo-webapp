@@ -2,7 +2,10 @@
     import SortableList from './SortableList.svelte';
     import WipHabitCard from "$lib/components/habits/WipHabitCard.svelte"
     import CreateHabitModal from "$lib/components/modals/CreateHabitModal.svelte"
+  
     export let wipList = [];
+    export let token;
+
     
     let createModal;
   
@@ -23,6 +26,7 @@
     list={wipList} 
     key="order" 
     on:sort={sortList}
+    {token}
     let:item
 		let:index
 >

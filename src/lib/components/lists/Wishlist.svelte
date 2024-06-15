@@ -48,6 +48,7 @@
     list={wishlist} 
     key="order" 
     on:sort={sortList}
+    {token}
     let:item
 		let:index
 >

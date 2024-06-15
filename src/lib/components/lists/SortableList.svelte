@@ -2,8 +2,9 @@
   import { quintOut } from "svelte/easing";
   import { crossfade } from "svelte/transition";
   import { flip } from "svelte/animate";
+  import { reorderHabits } from '$lib/utils/api'; 
+  import { createEventDispatcher } from "svelte";
 
-  // FLIP ANIMATION
   const [send, receive] = crossfade({
     duration: d => Math.sqrt(d * 200),
 
@@ -15,66 +16,73 @@
         duration: 600,
         easing: quintOut,
         css: t => `
-					transform: ${transform} scale(${t});
-					opacity: ${t}
-				`
+          transform: ${transform} scale(${t});
+          opacity: ${t}
+        `
       };
     }
   });
 
-  // DRAG AND DROP
   let isOver = false;
   const getDraggedParent = node =>
     node.dataset && node.dataset.index
       ? node.dataset
       : getDraggedParent(node.parentNode);
+
   const start = ev => {
-    ev.dataTransfer.setData("source", ev.target.dataset.index);
+    ev.dataTransfer.setData("sourceId", ev.target.dataset.id);
   };
+
   const over = ev => {
     ev.preventDefault();
     let dragged = getDraggedParent(ev.target);
     if (isOver !== dragged.id) isOver = JSON.parse(dragged.id);
   };
+
   const leave = ev => {
     let dragged = getDraggedParent(ev.target);
     if (isOver === dragged.id) isOver = false;
   };
-  const drop = ev => {
+
+  const drop = async ev => {
     isOver = false;
     ev.preventDefault();
     let dragged = getDraggedParent(ev.target);
-    let from = ev.dataTransfer.getData("source");
-    let to = dragged.index;
-    reorder({ from, to });
+    let fromId = ev.dataTransfer.getData("sourceId");
+    let toId = dragged.id;
+
+    try {
+      await reorderHabits(fromId, toId, token);
+      reorder({ fromId, toId });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  // DISPATCH REORDER
-  import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
-  const reorder = ({ from, to }) => {
+  const reorder = ({ fromId, toId }) => {
     let newList = [...list];
-    newList[from] = [newList[to], (newList[to] = newList[from])][0];
+    let fromIndex = newList.findIndex(item => item.id === parseInt(fromId));
+    let toIndex = newList.findIndex(item => item.id === parseInt(toId));
+
+    newList[fromIndex] = [newList[toIndex], (newList[toIndex] = newList[fromIndex])][0];
 
     dispatch("sort", newList);
   };
 
-  // UTILS
   const getKey = item => (key ? item[key] : item);
 
-  // PROPS
   export let list;
   export let key;
+  export let token;  // Accept token
 </script>
-
-
 
 {#if list && list.length}
   <ul class="mt-2 space-y-4">
     {#each list as item, index (getKey(item))}
       <li
         data-index={index}
-        data-id={JSON.stringify(getKey(item))}
+        data-id={item.id}
         draggable="true"
         on:dragstart={start}
         on:dragover={over}

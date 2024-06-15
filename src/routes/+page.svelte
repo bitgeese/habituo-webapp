@@ -10,4 +10,4 @@
 </script>
 
 
-<DailyRoutine {dailyRoutine}/>
+<DailyRoutine {dailyRoutine} {token}/>
