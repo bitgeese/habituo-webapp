@@ -2,12 +2,29 @@
     import SortableList from './SortableList.svelte';
     import WipHabitCard from "$lib/components/habits/WipHabitCard.svelte"
     import CreateHabitModal from "$lib/components/modals/CreateHabitModal.svelte"
-  
+    import DeleteHabitModal from "$lib/components/modals/DeleteHabitModal.svelte"
+    import {deleteHabit} from "$lib/utils/habitActions.js"
+
     export let wipList = [];
     export let token;
 
     
     let createModal;
+    let deleteModal;
+    let currentHabit = {name: null};
+
+    function handleDelete(event) {
+      currentHabit = event.detail;
+      if (deleteModal) {
+        deleteModal.showModal();
+      }
+    }
+
+    async function confirmDelete() {
+      await deleteHabit(currentHabit.id, token);
+      wipList = wipList.filter(habit => habit.id !== currentHabit.id);
+      currentHabit = null;
+    }
   
     const sortList = ev => {wipList = ev.detail};
 
@@ -30,7 +47,8 @@
     let:item
 		let:index
 >
-    <WipHabitCard habit={item}/>
+    <WipHabitCard habit={item} on:delete={handleDelete}/>
 </SortableList>
 
 <CreateHabitModal bind:createModal statusAdd={'wip'}/>
+<DeleteHabitModal bind:deleteModal {currentHabit} on:confirm={confirmDelete}/>
