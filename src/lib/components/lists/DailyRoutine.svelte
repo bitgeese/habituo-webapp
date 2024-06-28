@@ -53,7 +53,7 @@
 		let:index
 >
     {#if item.status == "wip"}
-        <WipHabitCard habit={item} on:delete={handleDelete}/>
+        <WipHabitCard habit={item} token={token} on:delete={handleDelete}/>
     {:else}
         <CoreHabitCard habit={item} on:delete={handleDelete}/>
     {/if}

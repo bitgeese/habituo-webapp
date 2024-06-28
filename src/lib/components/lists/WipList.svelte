@@ -47,7 +47,7 @@
     let:item
 		let:index
 >
-    <WipHabitCard habit={item} on:delete={handleDelete}/>
+    <WipHabitCard habit={item} token={token} on:delete={handleDelete}/>
 </SortableList>
 
 <CreateHabitModal bind:createModal statusAdd={'wip'}/>

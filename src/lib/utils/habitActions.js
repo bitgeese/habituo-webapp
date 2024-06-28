@@ -54,3 +54,20 @@ export async function deleteHabit(habitId, token) {
   
     return await response.json();
   }
+
+  export async function trackHabit(habitId, date, completed, token) {
+    const response = await fetch(`http://localhost:8000/api/habits/${habitId}/track/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`,
+        },
+        body: JSON.stringify({ date, completed })
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to track habit');
+    }
+
+    return await response.json();
+}
