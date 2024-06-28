@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 import { fetchUserProfile, fetchDailyRoutine } from '$lib/utils/api';
-import { createHabit } from '$lib/utils/habitActions';
+import { createHabit, workOn } from '$lib/utils/habitActions';
 
 export async function load({ cookies }) {
   const token = cookies.get('token');
@@ -21,6 +21,7 @@ export const actions = {
     throw redirect(303, '/login');
   },
   createHabit,
+  workOn,
 };
 
 export const ssr = true;

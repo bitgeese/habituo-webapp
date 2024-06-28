@@ -1,5 +1,5 @@
 import { fetchUserProfile, fetchInProgressHabits } from '$lib/utils/api';
-import { createHabit } from '$lib/utils/habitActions';
+import { createHabit, workOn } from '$lib/utils/habitActions';
 
 export async function load({ cookies }) {
   const token = cookies.get('token');
@@ -16,4 +16,5 @@ export async function load({ cookies }) {
 
 export const actions = {
   createHabit,
+  workOn
 };

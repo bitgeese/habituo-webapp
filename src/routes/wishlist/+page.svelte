@@ -4,7 +4,8 @@
   export let data;
 
   let wishlist = data.wishlist ?? [];
+  let dailyRoutine = data.dailyRoutine ?? [];
   let token = data.token ?? [];
 </script>
 
-<Wishlist {wishlist} {token}/>
+<Wishlist {wishlist} {token} {dailyRoutine}/>

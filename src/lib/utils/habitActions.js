@@ -30,6 +30,30 @@ export async function deleteHabit(habitId, token) {
     return await response.json();
   }
   
+
+  export async function workOn({ cookies, request }) {
+    const data = await request.formData();
+    const moveBelow = Number(data.get('moveBelow'));
+    const habit = Number(data.get('habit'));
+  
+    if (!moveBelow || !habit) {
+      return fail(400, { moveBelow, habit, missing: true });
+    }
+  
+    const response = await fetch(`http://localhost:8000/api/habits/${habit}/move_below/${moveBelow}/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${cookies.get('token')}`,
+      }
+    });
+  
+    if (!response.ok) {
+      return fail(400, { moveBelow, habit, incorrect: true });
+    }
+    throw redirect(303, '/');
+  }
+
   export async function createHabit({ cookies, request }) {
     const data = await request.formData();
     const name = data.get('name');

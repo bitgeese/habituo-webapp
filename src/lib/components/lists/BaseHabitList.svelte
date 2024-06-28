@@ -2,6 +2,7 @@
     import SortableList from './SortableList.svelte';
     import CreateHabitModal from "$lib/components/modals/CreateHabitModal.svelte";
     import DeleteHabitModal from "$lib/components/modals/DeleteHabitModal.svelte";
+    import WorkOnHabitModal from '../modals/WorkOnHabitModal.svelte';
     import { deleteHabit } from "$lib/utils/habitActions.js";
     import { createEventDispatcher } from 'svelte';
     import WipHabitCard from '../habits/WipHabitCard.svelte';
@@ -16,7 +17,7 @@
     let createModal;
     let deleteModal;
     let currentHabit = { name: null };
-    
+
     const dispatch = createEventDispatcher();
   
     function handleDelete(event) {
@@ -67,4 +68,3 @@
   
   <CreateHabitModal bind:createModal {statusAdd}/>
   <DeleteHabitModal bind:deleteModal {currentHabit} on:confirm={confirmDelete}/>
-  
