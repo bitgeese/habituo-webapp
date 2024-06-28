@@ -1,5 +1,4 @@
 <script>
-    
     import { createEventDispatcher } from 'svelte';
 
     export let habit;
@@ -17,18 +16,13 @@
     function handleEdit() {
       edit = !edit;
     }
-
 </script>
 
-
 <div class="flex items-center gap-1">
-
-
     {#if habit.status == "wishlist"}
-      <button on:click={handleSelect} class="btn btn-sm btn-outline">Work on </button>
+      <button on:click={handleSelect} class="btn btn-sm btn-outline">Work on</button>
     {/if}
 
-    
     {#if edit}
     <button class="btn btn-sm btn-outline">Edit</button>
     <button on:click={handleDelete} class="btn btn-sm btn-outline">Delete</button>
@@ -47,5 +41,4 @@
       </svg>          
     </button>
     {/if}
-
 </div>

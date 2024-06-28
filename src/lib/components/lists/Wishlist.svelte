@@ -7,9 +7,10 @@
   export let token;
 
   const dispatch = createEventDispatcher();
+
   async function handleSelect(event) {
-    currentHabit = event.detail;
-    await patchHabit(currentHabit.id, {'status': 'wip'}, token);
+    const currentHabit = event.detail;
+    await patchHabit(currentHabit.id, { 'status': 'wip' }, token);
     wishlist = wishlist.filter(habit => habit.id !== currentHabit.id);
     dispatch('select', currentHabit);
   }
@@ -20,4 +21,5 @@
   token={token} 
   title="Habit Wishlist" 
   statusAdd="wishlist"
+  on:select={handleSelect}
 />

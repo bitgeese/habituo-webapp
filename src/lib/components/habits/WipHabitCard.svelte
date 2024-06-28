@@ -1,17 +1,15 @@
 <script>
     import Rating from "$lib/components/details/Rating.svelte"
-    import { createEventDispatcher } from 'svelte';
     import { trackHabit } from '$lib/utils/habitActions.js';
     import HabitCardSettings from "./HabitCardSettings.svelte";
+    import { createEventDispatcher } from "svelte";
 
     export let habit;
     export let token;
 
     const dispatch = createEventDispatcher();
 
-    function handleDelete() {
-      dispatch('delete', habit);
-    }
+
 
     async function handleCheckboxChange(event) {
         const completed = event.target.checked;
@@ -23,6 +21,10 @@
             console.error("Failed to update habit tracking:", error);
             event.target.checked = !completed; // Revert checkbox state if API call fails
         }
+    }
+    function handleDelete(event) {
+      event.stopPropagation();
+      dispatch('delete', event.detail);
     }
 
 </script>
@@ -55,7 +57,7 @@
 
           </div>
           
-          <HabitCardSettings {habit}/>
+          <HabitCardSettings {habit} on:delete={handleDelete}/>
             
             
         </div>

@@ -9,6 +9,6 @@
   list={dailyRoutine} 
   token={token} 
   title="Daily Routine" 
-  statusAdd="core" 
+  statusAdd="core"
   showDate={true}
 />

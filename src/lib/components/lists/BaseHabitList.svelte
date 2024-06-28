@@ -4,8 +4,8 @@
     import DeleteHabitModal from "$lib/components/modals/DeleteHabitModal.svelte";
     import { deleteHabit } from "$lib/utils/habitActions.js";
     import { createEventDispatcher } from 'svelte';
-    import CoreHabitCard from '../habits/CoreHabitCard.svelte';
     import WipHabitCard from '../habits/WipHabitCard.svelte';
+    import CoreHabitCard from '../habits/CoreHabitCard.svelte';
   
     export let list = [];
     export let token;
@@ -16,6 +16,7 @@
     let createModal;
     let deleteModal;
     let currentHabit = { name: null };
+    
     const dispatch = createEventDispatcher();
   
     function handleDelete(event) {
@@ -24,13 +25,19 @@
         deleteModal.showModal();
       }
     }
-  
+
     async function confirmDelete() {
       await deleteHabit(currentHabit.id, token);
       list = list.filter(habit => habit.id !== currentHabit.id);
       currentHabit = null;
     }
-  
+
+    function handleSelect(event) {
+        event.stopPropagation();
+        dispatch('select', event.detail);
+    }
+
+    
     const sortList = ev => { list = ev.detail };
   
     let today = new Date();
@@ -52,9 +59,9 @@
       let:index
   >
     {#if item.status == "wip"}
-         <WipHabitCard habit={item} token={token} on:delete={handleDelete}/>
+    <WipHabitCard habit={item} token={token} on:delete={handleDelete}/>
     {:else}
-        <CoreHabitCard habit={item} on:delete={handleDelete}/>
+    <CoreHabitCard habit={item} on:delete={handleDelete} on:select={handleSelect}/>
     {/if}
   </SortableList>
   
