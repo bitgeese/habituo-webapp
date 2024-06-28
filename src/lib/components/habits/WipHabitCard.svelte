@@ -18,6 +18,7 @@
         try {
             await trackHabit(habit.id, new Date().toISOString().split('T')[0], completed, token);
             habit.today_status = completed; // Update local state to reflect change
+            habit.streak += completed ? 1 : -1;
         } catch (error) {
             console.error("Failed to update habit tracking:", error);
             event.target.checked = !completed; // Revert checkbox state if API call fails
@@ -34,8 +35,11 @@
           <div>
             
             <div class="flex items-center">
-              <input type="checkbox" checked={habit.today_status} on:change={handleCheckboxChange} class="mr-2 checkbox checkbox-primary checkbox-lg" />
-              <h3 class="line-clamp-1 text-sm sm:text-xl font-semibold">{ habit.name }</h3>
+              <input type="checkbox" checked={habit.today_status} on:change={handleCheckboxChange} class="mr-2 checkbox checkbox-primary sm:checkbox-lg" />
+              <h3 class="flex items-center">
+                <span class="line-clamp-1 text-sm sm:text-xl font-semibold">{ habit.name }</span>
+                <span class="ml-1 badge badge-xs">{ habit.streak }</span>
+              </h3>
             </div>
             
             
