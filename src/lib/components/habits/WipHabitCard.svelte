@@ -38,7 +38,7 @@
               <input type="checkbox" checked={habit.today_status} on:change={handleCheckboxChange} class="mr-2 checkbox checkbox-primary sm:checkbox-lg" />
               <h3 class="flex items-center">
                 <span class="line-clamp-1 text-sm sm:text-xl font-semibold">{ habit.name }</span>
-                <span class="ml-1 badge badge-xs">{ habit.streak }</span>
+                <span class="mx-1 badge badge-accent badge-sm sm:badge-lg">{ habit.streak }</span>
               </h3>
             </div>
             
