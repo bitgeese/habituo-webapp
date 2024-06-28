@@ -2,6 +2,7 @@
     import Rating from "$lib/components/details/Rating.svelte"
     import { createEventDispatcher } from 'svelte';
     import { trackHabit } from '$lib/utils/habitActions.js';
+    import HabitCardSettings from "./HabitCardSettings.svelte";
 
     export let habit;
     export let token;
@@ -26,37 +27,35 @@
 </script>
 <li class="bg-base-100 card shadow-lg">
       <div class="card-body">
+
+        
         
         <div class="flex items-center justify-between">
           <div>
-            <div class="mt-2 text-xl font-semibold">
             
             <div class="flex items-center">
               <input type="checkbox" checked={habit.today_status} on:change={handleCheckboxChange} class="mr-2 checkbox checkbox-primary checkbox-lg" />
-              <div>{ habit.name }</div>
+              <h3 class="line-clamp-1 text-sm sm:text-xl font-semibold">{ habit.name }</h3>
             </div>
             
             
+            <!-- <div class="hidden mt-2 text-xs flex items-center justify-start space-x-2">
+              <span>Streak: 12</span>
+              <span>·</span>
+              <span>Next: <i>Exercise 25 minutes</i></span>
             </div>
-              <div class="mt-2 text-xs flex items-center justify-start space-x-2">
-                <span>Streak: 12</span>
-                <span>·</span>
-                <span>Next: <i>Exercise 25 minutes</i></span>
-              </div>
 
-              <div class="mt-1">
-                <Rating numberOfStars={5}/>
-              </div>
+            <div class="hidden mt-1">
+              <Rating numberOfStars={5}/>
+            </div> -->
+
           </div>
           
-            <div class="flex items-center gap-1">
-              <button on:click={handleDelete} class="btn btn-error">Delete</button>
-              
-            </div>
+          <HabitCardSettings {habit}/>
             
             
         </div>
-            <progress class="progress progress-accent w-56" value="5" max="14"></progress>
+            <progress class="hidden progress progress-accent w-56" value="5" max="14"></progress>
         
 
       </div>
