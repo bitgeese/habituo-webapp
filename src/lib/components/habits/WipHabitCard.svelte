@@ -5,7 +5,7 @@
 
     export let habit;
     export let token;
-    
+
     const dispatch = createEventDispatcher();
 
     function handleDelete() {
@@ -31,7 +31,11 @@
           <div>
             <div class="mt-2 text-xl font-semibold">
             
-            <div>{ habit.name }</div>
+            <div class="flex items-center">
+              <input type="checkbox" checked={habit.today_status} on:change={handleCheckboxChange} class="mr-2 checkbox checkbox-primary checkbox-lg" />
+              <div>{ habit.name }</div>
+            </div>
+            
             
             </div>
               <div class="mt-2 text-xs flex items-center justify-start space-x-2">
@@ -47,7 +51,7 @@
           
             <div class="flex items-center gap-1">
               <button on:click={handleDelete} class="btn btn-error">Delete</button>
-              <input type="checkbox" checked={habit.today_status} on:change={handleCheckboxChange} class="checkbox checkbox-primary checkbox-lg" />
+              
             </div>
             
             
