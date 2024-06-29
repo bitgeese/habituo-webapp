@@ -48,5 +48,17 @@
           <HabitCardSettings {habit} on:delete={handleDelete} class="no-toggle" />
       </div>
       <progress class="hidden progress progress-accent w-56" value="5" max="14"></progress>
+
+
+      <div class="mt-2">
+        <div class="grid grid-cols-7 gap-2">
+          {#each Array(Number(30)).fill() as _, index}
+            <div class="text-center text-xs bg-primary inline-block h-6 w-6 rounded-full flex items-center justify-center">
+              {index + 1}
+            </div>
+          {/each}
+        </div>
+      </div>
+
   </div>
 </li>
