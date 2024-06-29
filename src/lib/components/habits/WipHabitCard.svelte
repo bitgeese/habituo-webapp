@@ -38,7 +38,7 @@
       <div class="flex items-center justify-between">
           <div>
               <div class="flex items-center">
-                  <input type="checkbox" bind:checked={habit.today_status} class="mr-2 checkbox checkbox-primary sm:checkbox-lg no-toggle" />
+                  <input type="checkbox" bind:checked={habit.today_status} class="mr-2 checkbox checkbox-primary sm:checkbox-lg no-toggle" on:click|stopPropagation on:change={(e) => handleCheckboxChange(e.target.checked)} />
                   <h3 class="flex items-center">
                       <span class="line-clamp-1 text-sm sm:text-xl font-semibold">{habit.name}</span>
                       <span class="mx-1 badge badge-accent badge-sm sm:badge-lg">{habit.streak}</span>

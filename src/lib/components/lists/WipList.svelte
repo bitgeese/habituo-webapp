@@ -10,4 +10,5 @@
   token={token} 
   title="Habits In Progress" 
   statusAdd="wip"
+  showDate={true}
 />
